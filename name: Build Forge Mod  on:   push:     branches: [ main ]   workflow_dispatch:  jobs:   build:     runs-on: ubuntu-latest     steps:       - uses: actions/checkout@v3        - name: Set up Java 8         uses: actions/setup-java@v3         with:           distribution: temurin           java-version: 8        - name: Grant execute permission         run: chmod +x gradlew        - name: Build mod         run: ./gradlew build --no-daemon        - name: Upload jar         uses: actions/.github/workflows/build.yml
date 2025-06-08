@@ -1,0 +1,30 @@
+name: Build Forge Mod
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+
+      - name: Grant execute permission
+        run: chmod +x gradlew
+
+      - name: Build mod
+        run: ./gradlew build --no-daemon
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v3
+        with:
+          name: SkyblockHUD-Mod
+          path: build/libs/*.jar
